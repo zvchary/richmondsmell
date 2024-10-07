@@ -22,17 +22,16 @@
             background-color: black;
             color: white;
             display: flex;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
-            height: 100vh; /* Full height of the viewport */
+            justify-content: center; 
             text-align: center;
         }
 
         img {
             width: 400px; /* Set image width */
             margin: 0 auto; /* Center the image */
-            display: block; /* Ensure image is treated as block-level */
+            display: flex; /* Ensure image is treated as block-level */
             margin-top: 50px; /* Add some space between title and image */
+            filter: blur(2px);
         }
 
         canvas {
@@ -43,31 +42,49 @@
             font-family: 'Azeret Mono', monospace;
             font-weight: 100;
             font-style: italic;
-            font-size: 2.5em;
+            font-size: 1.5em;
             color: rgb(255, 251, 0);
+            
             margin-bottom: 0; /* Reduced margin to bring image closer */
+        }
+
+        .container {
+                display: flex;
+                gap: 10px;
+                justify-content: space-between;
+            }
+
+        .subtitle{
+            font-family: 'Azeret Mono', monospace;
+            font-weight: 100;
+            font-style:normal;
+            font-size: .5em;
+            color: rgb(255, 251, 0);  
+            text-align: left;
+            margin-left: 20%;
+            margin-right: 20%;
         }
 
         .draggable {
             width: 100px;
             height: 100px;
-            
             border: 2px solid red;
             margin: 20px;
             display: inline-block;
             cursor: pointer;
             position: absolute; /* Positioning will allow free movement */
             transition: left 3s ease-in-out, top 3s ease-in-out;
+            z-index:100;
         }
 
         #smokeCanvas {
             position: absolute;
-            top: 0;
-            left: 0;
+            top: 10;
+            left: 1110;
             pointer-events: none; /* Allow clicks to pass through */
         }
         .smoke-source {
-            position: absolute;
+            position: relative;
             width: 100px;
             height: 100px;
             border-radius: 10px;
@@ -80,10 +97,17 @@
 <body>
 
     <div class="title">
+        <br><br><br><br><br><br><br><br><br>
         What's that smell?
         <img src="cigarette.png" alt="Cigarette Image">
+        <br><br><br><br><br><br><br><br><br>
+        <div class="subtitle">
+           What has been described by local residents as a "slurry of cigarettes, poppers, weed, beer breath, raw sewage, piss, and even cum," has rapidly consumed the city of Richmond, VA. We've all experienced this odd "smell" looming over the city. Why has there been inconsistent coverage of it? This site is a live archive documenting and providing the latest coverage this unknown phenomenon. 
+        </div>
+        <br><br><br><br><br><br><br><br><br>
+
     </div>
-    <div class="smoke-source" id="smokeSource"></div>
+    
     <canvas id="smokeCanvas"></canvas>
 
     <div class="draggable" id="box1" style="top: 100px; left: 100px;"></div>
@@ -93,75 +117,99 @@
 </body>
 
 <script>
-
-const canvas = document.getElementById('smokeCanvas');
-        const ctx = canvas.getContext('2d');
-        const smokeSource = document.getElementById('smokeSource');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        class Particle {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.size = Math.random() * 5 + 5; // Particle size
-        this.speedX = (Math.random() - 0.5) * 1; // Slower horizontal speed
-        this.speedY = Math.random() * -1 - 1; // Slower vertical speed (upwards)
-        this.opacity = Math.random() * 0.3 + 0.3; // Initial opacity between 0.1 and 0.6
-    }
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.opacity -= 0.007; // Fade out
-    }
-    draw() {
-        // Create a radial gradient
-        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity * 0.5})`); // Lowered opacity at the center
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)'); // Edge color (transparent)
-
-        ctx.fillStyle = gradient; // Set gradient as fill style
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-}
-
-        const particles = [];
-
-        function createParticles() {
-            const rect = smokeSource.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2; // Center X of the box
-            const centerY = rect.top + rect.height; // Bottom Y of the box
-            for (let i = 0; i < 5; i++) { // Create 5 particles at a time
-                particles.push(new Particle(centerX, centerY));
-        }}
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-            particles.forEach((particle, index) => {
-                particle.update();
-                particle.draw();
-                // Remove particles when fully transparent
-                if (particle.opacity <= 0) {
-                    particles.splice(index, 1);
-                }
-            });
-            requestAnimationFrame(animate); // Call animate again
-            createParticles(); // Create new particles continuously
+    const canvas = document.getElementById('smokeCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    let mouseX = canvas.width; // Initialize mouse position
+    let mouseY = canvas.height;
+    
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 5; // Particle size
+            this.speedX = (Math.random() - 0.5) * 1; // Slower horizontal speed
+            this.speedY = Math.random() * -1 - 1; // Slower vertical speed (upwards)
+            this.opacity = Math.random() * 0.3 + 0.3; // Initial opacity between 0.1 and 0.6
         }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.opacity -= 0.007; // Fade out
+        }
+        draw() {
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity * 0.5})`);
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
-        animate(); // Start animation
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    const particles = [];
+    
+    function createParticles() {
+        for (let i = 0; i < 10; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+        particles.forEach((particle, index) => {
+            particle.update();
+            particle.draw();
+            if (particle.opacity <= 0) {
+                particles.splice(index, 1);
+            }
+        });
+        requestAnimationFrame(animate);
+        createParticles();
+    }
+    
+    animate(); // Start animation
+    
+    document.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX + window.scrollX;
+        mouseY = event.clientY + window.scrollY;
+    });
+    
+    function changeBackgroundColor() {
+        const scrollY = window.scrollY; // Get the current scroll position
+        const maxScroll = document.body.scrollHeight - window.innerHeight; // Maximum scrollable height
+    
+        // Calculate a ratio from 0 to 1 based on scroll position
+        const ratio = Math.min(scrollY / maxScroll, 1);
+    
+        // Interpolate between black (0, 0, 0) and red (255, 0, 0)
+        const red = Math.floor(ratio * 255);
+        const backgroundColor = `rgb(${red}, 0, 0)`;
+    
+        document.body.style.backgroundColor = backgroundColor; // Apply the background color
 
+
+        draggables.forEach(box => {
+            box.style.opacity = 1 - ratio; // Gradually become transparent
+        });
+    }
+    
+    // Add scroll event listener
+    window.addEventListener('scroll', changeBackgroundColor);
+    
     const draggables = document.querySelectorAll('.draggable');
-
+    
     function getRandomPosition() {
         const x = Math.random() * (window.innerWidth - 100);
         const y = Math.random() * (window.innerHeight - 100);
         return { x, y };
     }
-
+    
     function checkCollision(box1, box2) {
         const rect1 = box1.getBoundingClientRect();
         const rect2 = box2.getBoundingClientRect();
@@ -170,59 +218,55 @@ const canvas = document.getElementById('smokeCanvas');
                  rect1.bottom < rect2.top || 
                  rect1.top > rect2.bottom);
     }
-
+    
     function floatBox(box) {
         const move = () => {
             const { x, y } = getRandomPosition();
-            box.style.transition = 'left 3s ease-in-out, top 3s ease-in-out'; // Enable transition
-
+            box.style.transition = 'left 3s ease-in-out, top 3s ease-in-out';
+    
             box.style.left = `${x}px`;
             box.style.top = `${y}px`;
-
-            // Check for collisions with other boxes
+    
             draggables.forEach(otherBox => {
                 if (otherBox !== box && checkCollision(box, otherBox)) {
-                    // If a collision occurs, get a new position
                     const { x: newX, y: newY } = getRandomPosition();
                     box.style.left = `${newX}px`;
                     box.style.top = `${newY}px`;
                 }
             });
-
-            // Schedule the next move
-            setTimeout(move, 2500 + Math.random() * 2); // Random delay after movement
+    
+            setTimeout(move, 2500 + Math.random() * 2);
         };
-        move(); // Start the movement
+        move();
     }
-
-    // Initialize floating effect on each box
+    
     draggables.forEach(box => {
         floatBox(box);
-
+    
         box.addEventListener('mousedown', (e) => {
             const offsetX = e.clientX - box.getBoundingClientRect().left;
             const offsetY = e.clientY - box.getBoundingClientRect().top;
-
+    
             const moveAt = (pageX, pageY) => {
                 box.style.left = pageX - offsetX + 'px';
                 box.style.top = pageY - offsetY + 'px';
             };
-
+    
             const mouseMoveHandler = (e) => {
                 moveAt(e.pageX, e.pageY);
             };
-
+    
             document.addEventListener('mousemove', mouseMoveHandler);
-
+    
             box.onmouseup = () => {
                 document.removeEventListener('mousemove', mouseMoveHandler);
                 box.onmouseup = null;
             };
-
+    
             box.ondragstart = () => false; // Prevent default drag behavior
         });
     });
+</script>
 
     
-</script>
 </html>
