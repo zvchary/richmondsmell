@@ -42,8 +42,7 @@
             font-weight: 100;
             font-style: italic;
             font-size: 1.5em;
-            color: rgb(255, 251, 0);
-            
+            color: rgb(255, 251, 0);  
             margin-bottom: 0; /* Reduced margin to bring image closer */
         }
 
@@ -53,7 +52,7 @@
             background-color: yellow;
             border: 2px solid rgb(255, 0, 0);
             color: red;
-            margin: 20px;
+            margin: 20px auto;
             font-size: 1em;
             display: inline-block;
             cursor: pointer;
@@ -93,9 +92,6 @@
             filter: blur(2px);
         }
 
-
- 
-
         .draggable {
             width: 100px;
             height: 100px;
@@ -107,12 +103,51 @@
         }
 
         #smokeCanvas {
-            position: absolute;
-            pointer-events: none;
-            z-index:1000
+            position: fixed; /* Changed from absolute to fixed */
+            top: 0;          /* Align to the top of the viewport */
+            left: 0;         /* Align to the left of the viewport */
+            width: 100vw;    /* Full width of the viewport */
+            height: 100vh;   /* Full height of the viewport */
+            pointer-events: none; /* Prevent interactions */
+            z-index: 1000;   /* Ensure it's behind other content */
         }
+
         .smoke-source {
             position: absolute;
+        }
+
+        .fade-arrows {
+            opacity: 0; /* Start transparent */
+            font-style: normal;
+            animation: fadeIn 2s forwards; /* Apply the fade-in animation */
+            animation-delay: 3s; /* Optional delay before the animation starts */
+        }
+
+        @media (max-width: 768px) {
+            .drag {
+                display: block; /* Change to block to stack them vertically */
+                width: 90%; /* Full width for mobile */
+                margin: 10px auto; /* Center with margin */
+                position: relative; /* Allow normal flow */
+            }
+            
+            .draggable-container {
+                filter: none; /* Remove blur for better readability on mobile */
+            }
+
+            /* Optional: Adjust other styles as needed */
+            .drag img {
+                width: 100%; /* Make images responsive */
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Starting opacity */
+            }
+            to {
+                opacity: 1; /* Ending opacity */
+            }
         }
    
     </style>
@@ -122,10 +157,15 @@
     <div class="title">
         <br><br><br><br><br><br><br><br><br>
         What's that smell? <br><br><br>
+
         <div class="container">
-            <img src="cigarette.png" alt="Cigarette Image">
+            <img src="cigarette.png" alt="Cigarette Image"> 
         </div>
-        <br><br>
+
+        <div class="fade-arrows">
+            <br><br>
+            ↓↓↓
+        </div>
         
         <br><br><br><br><br><br><br>
         <div class="subtitle">
@@ -142,19 +182,19 @@
     <div class="draggable" id="box3" style="top: 100px; left: 100px; background-image: url('https://images2.imgbox.com/25/0f/o7Uo4HDL_o.png'); background-size: cover; background-position: center;"></div>
     
     <div class="draggable-container">
-        <div class="drag" id="drag1" style="top: 150%; left: 5%;" title="Press Release">
+        <div class="drag" id="drag1" style="top: 170%; left: 20%;" title="Press Release">
             <div class="dragtext"><a href="pressreleasepg.html">Press Release 09/05/24</a></div>
             <img src="pressrelease.jpg" alt="Press Release">
         </div>
-        <div class="drag" id="drag2" style="top: 150%; left: 20%;">
+        <div class="drag" id="drag2" style="top: 190%; left: 20%;">
             <div class="dragtext"><a href="instagrampost1.html">Instagram Post 09/7/24</a></div>
             <img src="instagram1.PNG" alt="Instagram Post">
         </div>
-        <div class="drag" id="drag3" style="top: 150%; left: 35%;">
+        <div class="drag" id="drag3" style="top: 210%; left: 20%;">
             <div class="dragtext"><a href="redditpost1.html">Reddit Post 09/03/24</a></div><img src="Reditscreenshot1.png" alt = "Reddit Post 1">
             <!-- You can add content or images here -->
         </div>
-        <div class="drag" id="drag4" style="top: 150%; left: 50%;">
+        <div class="drag" id="drag4" style="top: 230%; left: 20%;">
             <div class="dragtext"><a href="NBC13article.html">NBC13 Odor Article 09/03/24</a></div><img src="News article.png" alt = "News Article">
             <!-- You can add content or images here -->
         </div>
@@ -168,11 +208,17 @@
     const canvas = document.getElementById('smokeCanvas');
     const ctx = canvas.getContext('2d');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 
-    let mouseX = canvas.width;
-    let mouseY = canvas.height;
+    resizeCanvas(); // Initial canvas resize
+
+    window.addEventListener('resize', resizeCanvas); // Update on resize
+
+    let mouseX = canvas.width / 2; // Start at center
+    let mouseY = canvas.height / 2;
 
     class Particle {
         constructor(x, y) {
@@ -202,7 +248,7 @@
     const particles = [];
 
     function createParticles() {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) { // Create multiple particles per movement
             particles.push(new Particle(mouseX, mouseY));
         }
     }
@@ -217,14 +263,14 @@
             }
         });
         requestAnimationFrame(animate);
-        createParticles();
     }
 
     animate();
 
     document.addEventListener('mousemove', (event) => {
-        mouseX = event.clientX + window.scrollX;
-        mouseY = event.clientY + window.scrollY;
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+        createParticles(); // Create particles at the cursor position
     });
 
     const draggables = document.querySelectorAll('.draggable');
@@ -331,7 +377,7 @@
     }
 
     window.addEventListener('scroll', changeBackgroundColor);
-    
+
 </script>
 
 
