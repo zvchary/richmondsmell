@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Post</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: content-box;
+        }
+
+        body {
+            font-family: "Azeret Mono", monospace;
+            background-color: red;
+            color: white;
+            display: flex;
+            justify-content: center; 
+            text-align: center;
+            user-select: none; 
+        }
+
+        img {
+            max-width: 80%; /* Ensure the image fits within the container */
+            height: fit-content; /* Maintain aspect ratio */
+            cursor: pointer;
+            box-shadow: 0 1px 15px yellow;
+            margin-left: 12%;
+        }
+
+        .zoom {
+            transform: scale(1.5); /* Zoom factor */
+            transition: transform 0.25s ease; /* Smooth transition */
+        }
+
+        .title {
+            font-weight: 100;
+            font-size: 1.5em;
+            color: rgb(255, 251, 0);  
+            margin: 5%;
+        }
+        .subtitle {
+            font-weight: 200;
+            font-size: .5em;
+            color: rgb(255, 251, 0);  
+        }
+        .flexbox-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5%;
+        }
+        .flex-item {
+            padding: 25px;
+            text-align: left;
+            flex: 1;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(77, 0, 0, 0.8); /* Black background with opacity */
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            font-weight: 100;
+            margin-bottom: 10px;
+            margin-top: 20px;
+            max-width: 90%; /* Maximum width of the modal image */
+            max-height: 80%; /* Maximum height of the modal image */
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: yellow;
+            font-size: 35px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        Instagram Post <div class="subtitle">09/07/24<br>
+            @edenshutters
+            <div class="flexbox-container">
+                <div class="flex-item"><img src="instagram1.PNG" alt="Instagram Post"> </div>
+                <div class="flex-item">
+                    09/07 - In a recently deleted post, an Instagram User by the name of '@edenshutters'
+                    who, upon further research, has recently moved to the city of Richmond,
+                    VA and makes note of the strong odor in the city. <br><br>This post lines up with the 
+                    time frame of the initial first reportings of the mysterious odor lingering in throughout the city
+                    in early September.<br><br>Click the Image to expand.
+                    <br><br><a href="index.html">&lt;&lt; Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="imageModal">
+        <span class="close" id="closeModal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption"></div>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("imageModal");
+        
+        // Get the image and insert it inside the modal
+        var img = document.querySelector(".flex-item img");
+        var modalImg = document.getElementById("modalImage");
+        var captionText = document.getElementById("caption");
+
+        img.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = this.src; // Set the modal image source
+            captionText.innerHTML = this.alt; // Set caption (optional)
+
+            // Remove zoom class if previously added
+            modalImg.classList.remove("zoom");
+        }
+
+        // Click event for the modal image to zoom in/out
+        modalImg.onclick = function() {
+            this.classList.toggle("zoom"); // Toggle the zoom class
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementById("closeModal");
+
+        // Close modal when <span> (x) is clicked
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        // Close the modal when clicking outside of the image
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
