@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richmond Smell</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: content-box;
+        }
+
+        canvas {
+            display: block; /* Make the canvas fill the space */
+        }
+        
+        body {
+            font-family: "Azeret Mono", monospace;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center; 
+            text-align: center;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none;    /* Firefox */
+            -ms-user-select: none;     /* Internet Explorer and Edge */
+            user-select: none; 
+        }
+
+        img {
+            max-width: 95%; /* Ensure the image fits within the container */
+            height: auto; /* Maintain aspect ratio */
+            margin-top: 5px;
+            display: inline-block;
+        }
+        
+        .title {
+            font-family: 'Azeret Mono', monospace;
+            font-weight: 100;
+            font-style: italic;
+            font-size: 1.5em;
+            color: rgb(255, 251, 0);  
+            margin-bottom: 0; /* Reduced margin to bring image closer */
+        }
+
+        .drag {
+            width: 200px;
+            height:fit-content;
+            background-color: yellow;
+            border: 2px solid rgb(255, 0, 0);
+            color: red;
+            margin: 20px auto;
+            font-size: 1em;
+            display: block;
+            cursor:crosshair;
+            position: absolute; /* Keep absolute for dragging */
+            z-index: 100;
+            box-shadow: 0 4px 15px yellow;
+        }
+
+        .drag img {
+            width: 90%; /* Make the image take the full width of the container */
+            height: auto; /* Maintain the aspect ratio */
+            margin: 10; /* Remove any default margins */
+            margin-bottom: 5px;
+        }
+
+        .dragtext {
+            margin-top: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .subtitle{
+            font-family: 'Azeret Mono', monospace;
+            font-weight: 200;
+            font-style:normal;
+            font-size: .7em;
+            color: rgb(255, 251, 0);  
+            text-align: left;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+
+        .tinytext{
+            font-size: .5em;
+            font-weight: 200;
+            font-style: normal;
+            text-align: left;
+            margin-left: 20%;
+            margin-bottom: 5%;
+            margin-top:20%;
+        }
+
+        .container {
+            text-align: center;
+            margin-left: 30%;
+            margin-right: 30%; /* Center the container itself */
+            filter: blur(2px);
+        }
+
+        .draggable {
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            display: inline-block;
+            position: absolute; /* Positioning will allow free movement */
+            transition: left 3s ease-in-out, top 3s ease-in-out;
+            z-index:100;
+        }
+
+        .mobileview {
+            font-style: normal;
+            font-weight: 500;
+            font-size: .5em;
+            text-align: left;
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        #smokeCanvas {
+            position: fixed; /* Changed from absolute to fixed */
+            top: 0;          /* Align to the top of the viewport */
+            left: 0;         /* Align to the left of the viewport */
+            width: 100vw;    /* Full width of the viewport */
+            height: 100vh;   /* Full height of the viewport */
+            pointer-events: none; /* Prevent interactions */
+            z-index: 1000;   /* Ensure it's behind other content */
+        }
+
+        .smoke-source {
+            position: absolute;
+        }
+
+        .fade-arrows {
+            opacity: 0; /* Start transparent */
+            font-style: normal;
+            animation: fadeIn 2s forwards; /* Apply the fade-in animation */
+            animation-delay: 3s; /* Optional delay before the animation starts */
+        }
+
+        @media (max-width: 768px) {
+            .subtitle{
+                margin-left: 10%;
+                margin-right: 10%;
+                font-size: .5em;
+            }
+            .tinytext{
+                margin-left:10%;
+                margin-top:3%;
+                font-size: .4em;
+            }
+            
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Starting opacity */
+            }
+            to {
+                opacity: 1; /* Ending opacity */
+            }
+        }
+   
+    </style>
+</head>
+<body>
+
+    <div class="title">
+        <br><br><br><br><br><br><br><br><br>
+        What's that smell? <br><br><br>
+
+        <div class="container">
+            <img src="cigarette.png" alt="Cigarette Image"> 
+        </div>
+
+        <div class="fade-arrows">
+            <br><br>
+            ↓↓↓
+        </div>
+        
+        <br><br><br><br><br><br><br><br><br>
+        <div class="subtitle">
+            What has been described by local residents as a "slurry of cigarettes, poppers, weed, beer breath, raw sewage, piss, and even cum," has rapidly consumed the city of Richmond, VA. We've all experienced this odd "smell" looming over the city. Why has there been inconsistent coverage of it? <br><br>This site is a live archive documenting and providing the latest coverage this unknown phenomenon. 
+        <br><br><i>Submit any odor reports <b><a href="https://forms.gle/WrCh2S8Wks8voDnr9">here.</a></b></i>
+        </div>
+        <br><br><br><br>
+        <div class="mobileview hidden">
+            <a href="pressreleasepg.html">&rarr; Press Release 09/05/24</a><br><br>
+            <a href="instagrampost1.html">&rarr; Instagram Post 09/7/24</a><br><br>
+            <a href="redditpost1.html">&rarr; Reddit Post 09/03/24</a><br><br>
+            <a href="NBC13article.html">&rarr; NBC13 Odor Article 09/03/24</a><br><br>
+            <a href="Localreports.html">&rarr; Local Reports</a>
+            
+        </div>
+    
+        <div class="tinytext">
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            Last Updated 10/16/2024.
+            <br>Please note that this is a continuous archive of growing sources.
+            <br>©RichmondSmell2024 Alrights reserved.
+        </div>
+    </div>
+    
+    
+    
+    <canvas id="smokeCanvas"></canvas>
+
+    <div class="draggable" id="box1" style="top: 100px; left: 100px; background-image: url('https://images2.imgbox.com/25/0f/o7Uo4HDL_o.png'); background-size: cover; background-position: center;"></div>
+    <div class="draggable" id="box2" style="top: 100px; left: 100px; background-image: url('https://images2.imgbox.com/25/0f/o7Uo4HDL_o.png'); background-size: cover; background-position: center;"></div>
+    <div class="draggable" id="box3" style="top: 100px; left: 100px; background-image: url('https://images2.imgbox.com/25/0f/o7Uo4HDL_o.png'); background-size: cover; background-position: center;"></div>
+    
+
+
+    <div class="draggable-container">
+        <div class="drag" id="drag1" style="top: 1000px; left: 10%;" title="Press Release">
+            <div class="dragtext"><a href="pressreleasepg.html">Press Release 09/05/24</a></div>
+            <img src="pressrelease.jpg" alt="Press Release">
+        </div>
+        <div class="drag" id="drag2" style="top: 1040px; left: 26%;">
+            <div class="dragtext"><a href="instagrampost1.html">Instagram Post 09/7/24</a></div>
+            <img src="instagram1.PNG" alt="Instagram Post">
+        </div>
+        <div class="drag" id="drag3" style="top: 1000px; left: 42%;">
+            <div class="dragtext"><a href="redditpost1.html">Reddit Post 09/03/24</a></div><img src="Reditscreenshot1.png" alt = "Reddit Post 1">
+            <!-- You can add content or images here -->
+        </div>
+        <div class="drag" id="drag4" style="top: 1040px; left: 58%;">
+            <div class="dragtext"><a href="NBC13article.html">NBC13 Odor Article 09/03/24</a></div><img src="News article.png" alt = "News Article">
+            <!-- You can add content or images here -->
+        </div>
+        <div class="drag" id="drag5" style="top: 1000px; left: 74%;">
+            <div class="dragtext"><a href="Localreports.html">Local Reports</a></div><img src="odor_smell.png" alt = "Local Reports">
+            <!-- You can add content or images here -->
+        </div>
+        
+    </div>
+    
+    
+
+</body>
+
+<script>
+
+    const canvas = document.getElementById('smokeCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    resizeCanvas(); // Initial canvas resize
+
+    window.addEventListener('resize', resizeCanvas); // Update on resize
+
+    let mouseX = canvas.width / 2; // Start at center
+    let mouseY = canvas.height / 2;
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 5 + 5;
+            this.speedX = (Math.random() - 0.5) * 1;
+            this.speedY = Math.random() * -1 - 1;
+            this.opacity = Math.random() * 0.3 + 0.3;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.opacity -= 0.007;
+        }
+        draw() {
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity * 0.5})`);
+            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    const particles = [];
+
+    function createParticles() {
+        for (let i = 0; i < 5; i++) {
+            particles.push(new Particle(mouseX, mouseY));
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((particle, index) => {
+            particle.update();
+            particle.draw();
+            if (particle.opacity <= 0) {
+                particles.splice(index, 1);
+            }
+        });
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    document.addEventListener('mousemove', (event) => {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+        createParticles();
+    });
+
+        function checkMobileView() {
+        const mobileView = document.querySelector('.mobileview');
+            if (window.innerWidth <= 768) { 
+                mobileView.classList.remove('hidden');
+            } else {
+                mobileView.classList.add('hidden');
+            }
+    }
+
+    checkMobileView();
+
+    window.addEventListener('resize', checkMobileView);
+
+        function checkMobile() {
+        const draggableContainer = document.querySelector('.draggable-container');
+            if (window.innerWidth <= 768) { 
+                draggableContainer.classList.add('hidden'); 
+            } else {
+                draggableContainer.classList.remove('hidden');
+            }
+        }
+
+    checkMobile();
+
+    window.addEventListener('resize', checkMobile);
+
+    const draggables = document.querySelectorAll('.draggable');
+    let maxZIndex = 100;
+
+    draggables.forEach(box => {
+        floatBox(box);
+        box.addEventListener('mousedown', (e) => {
+            box.style.zIndex = ++maxZIndex;
+
+            const offsetX = e.clientX - box.getBoundingClientRect().left;
+            const offsetY = e.clientY - box.getBoundingClientRect().top;
+
+            const moveAt = (pageX, pageY) => {
+                box.style.left = pageX - offsetX + 'px';
+                box.style.top = pageY - offsetY + 'px';
+            };
+
+            const mouseMoveHandler = (e) => {
+                moveAt(e.pageX, e.pageY);
+            };
+
+            document.addEventListener('mousemove', mouseMoveHandler);
+
+            document.onmouseup = () => {
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.onmouseup = null;
+            };
+
+            box.ondragstart = () => false;
+        });
+    });
+
+    const draggableElements = document.querySelectorAll('.drag');
+    draggableElements.forEach(drag => {
+        drag.addEventListener('mousedown', (e) => {
+            drag.style.zIndex = ++maxZIndex;
+
+            const offsetX = e.clientX - drag.getBoundingClientRect().left;
+            const offsetY = e.clientY - drag.getBoundingClientRect().top;
+
+            const mouseMoveHandler = (e) => {
+                drag.style.left = e.pageX - offsetX + 'px';
+                drag.style.top = e.pageY - offsetY + 'px';
+            };
+
+            document.addEventListener('mousemove', mouseMoveHandler);
+
+            document.onmouseup = () => {
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.onmouseup = null;
+            };
+
+            drag.ondragstart = () => false;
+        });
+    });
+
+    function getRandomPosition() {
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 100);
+        return { x, y };
+    }
+
+    function checkCollision(box1, box2) {
+        const rect1 = box1.getBoundingClientRect();
+        const rect2 = box2.getBoundingClientRect();
+        return !(rect1.right < rect2.left || 
+                 rect1.left > rect2.right || 
+                 rect1.bottom < rect2.top || 
+                 rect1.top > rect2.bottom);
+    }
+
+    function floatBox(box) {
+        const move = () => {
+            const { x, y } = getRandomPosition();
+            box.style.transition = 'left 3s ease-in-out, top 3s ease-in-out';
+            box.style.left = `${x}px`;
+            box.style.top = `${y}px`;
+
+            draggables.forEach(otherBox => {
+                if (otherBox !== box && checkCollision(box, otherBox)) {
+                    const { x: newX, y: newY } = getRandomPosition();
+                    box.style.left = `${newX}px`;
+                    box.style.top = `${newY}px`;
+                }
+            });
+
+            setTimeout(move, 2500 + Math.random() * 2);
+        };
+        move();
+    }
+
+    function changeBackgroundColor() {
+        const scrollY = window.scrollY;
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const ratio = Math.min(scrollY / maxScroll, 1);
+        const red = Math.floor(ratio * 255);
+        const backgroundColor = `rgb(${red}, 0, 0)`;
+        document.body.style.backgroundColor = backgroundColor;
+
+        draggables.forEach(box => {
+            box.style.opacity = 1 - ratio;
+        });
+    }
+
+    window.addEventListener('scroll', changeBackgroundColor);
+
+</script>
+
+</html>
