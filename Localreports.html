@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Reports</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Azeret Mono", monospace;
+            background-color: red;
+            color: white;
+            display: flex;
+            justify-content: center; 
+            text-align: center;
+            user-select: none; 
+            width: 100%; /* Ensure body takes full width */
+            cursor: url('cigarettecursor.png'), auto;
+        }
+        
+        a {
+            cursor: url('cigarettecursor2.png'), pointer; /* Change to your image URL */
+        }
+
+        img {
+            max-width: 80%; /* Ensure the image fits within the container */
+            height: fit-content; /* Maintain aspect ratio */
+            cursor: pointer;
+            box-shadow: 0 1px 15px yellow;
+            margin-left: 12%;
+        }
+
+        .title {
+            font-weight: 100;
+            font-size: 1.5em;
+            color: rgb(255, 251, 0);  
+            margin: 5%;
+        }
+        .subtitle {
+            font-weight: 300;
+            font-size: .5em;
+            color: rgb(255, 251, 0);  
+        }
+
+        .flexbox-container-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 40px;
+            margin-left:10%;
+            width: 80%; /* Make the container full width */
+        }
+
+        .flex-item {
+            padding: 5px;
+            font-size: .5em;
+            font-weight: 300;
+            text-align: left;
+            flex: 1; /* Allow flex items to grow */
+            background-color: yellow;
+            color: red;
+            box-shadow: 0 1px 5px yellow;
+            width: 100%; /* Ensure flex items also take full width */
+        }
+
+
+        @media (max-width: 768px) {
+            .flexbox-container-column {
+                width: 100%;
+                margin-left: 0;
+            }
+            .title {
+                font-size: 1.2em; /* Smaller font size for mobile */
+            }
+            .subtitle {
+                font-size: 0.55em; /* Smaller subtitle size for mobile */
+            }
+            .flex-item {
+                padding: 10px;
+            }
+        }
+        
+    </style>
+</head>
+<!--    <div class="flex-item">
+            <b>Reported by:</b> N/A<br>
+            <b>Time/Date:</b> ... <br>
+            <b>Location:</b> ... <br>
+            <b>Smell:</b> ... <br>
+            <b>Speculations:</b> ...
+        </div> -->
+<body>
+    <div class="title">
+        Local Reports<div class="subtitle"><br>A collection of local odor reports updated daily<br><br>
+            <a href="index.html">&lt;&lt; Return to Home</a>
+        </div>
+        <div class="flexbox-container-column">
+            <div class="flex-item">
+                <b>Smell something? Report it <a href="https://forms.gle/WrCh2S8Wks8voDnr9">here.</a></b>
+            </div>
+            <div class="flex-item">
+                <b>Reported by:</b> N/A<br>
+                <b>Time/Date:</b> august - present<br>
+                <b>Location:</b> VCU campus <br>
+                <b>Smell:</b> rotten tooth. body odor. <br>
+                <b>Speculations:</b> i know who it is. 
+            </div>
+            <div class="flex-item">
+                <b>Reported by:</b> N/A<br>
+                <b>Time/Date:</b> Dusk, october 9th 2024<br>
+                <b>Location:</b> on the 1000 block of franklin street <br>
+                <b>Smell:</b> a mixture of something man made and extra terrestrial. 
+                earthy, burnt, enough to seemingly singe the nostril hairs<br>
+                <b>Speculations:</b> this particular smell was so familiar…. and yet so 
+                distant that it’s mere existence in the air rattled me to my core. 
+                what could it be? 
+            </div>
+            <div class="flex-item">
+                <b>Reported by:</b> N/A<br>
+                <b>Time/Date:</b> 12:31 pm, October 15th, 2024<br>
+                <b>Location:</b> The vcu comapss<br>
+                <b>Smell:</b> I cannot escape the scent of jalapeño 
+                Cheetos combined with body odor and axe spray. It’s destroying me!!!<br>
+                <b>Speculations:</b> Many men were seen eating jalapeños and Cheetos
+                 maybe that has something to do with it
+                </div>
+          </div>
+    </div>
+    
+    <script>
+    </script>
+</body>
+</html>
