@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Richmond Smell</title>
-    <link rel="icon" type="image/x-icon" href="cigarettecursor.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap');
 
@@ -198,6 +197,9 @@
         }
    
     </style>
+
+<link rel="icon" type="image/x-icon" href="cigarettecursor.png">
+
 </head>
 <body>
 
@@ -232,7 +234,7 @@
     
         <div class="tinytext">
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            Last Updated 10/17/2024.
+            Last Updated <span id="lastUpdated"></span>.
             <br>Please note that this is a continuous archive of growing sources.
             <br>©RichmondSmell2024 Alrights reserved.
         </div>
@@ -476,6 +478,16 @@
     }
 
     window.addEventListener('scroll', changeBackgroundColor);
+
+    function formatDate(date) {
+        const options = { month: 'numeric', day: 'numeric', year: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentDate = new Date();
+        document.getElementById('lastUpdated').textContent = formatDate(currentDate);
+    });
 
 </script>
 
