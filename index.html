@@ -146,9 +146,39 @@
             text-align: left;
             flex: 1; /* Allow flex items to grow */
             border-radius: 0%;
+            border-left: 5px double blue;
             background: linear-gradient(90deg, rgb(255, 255, 0),rgb(255, 0, 0,0));
             color: red;
             width: 100%; /* Ensure flex items also take full width */
+        }
+
+        .slideshow-container {
+            position: relative;
+            max-width: 100%; /* Adjust as needed */
+            overflow: hidden;
+            background:rgb(255, 251, 0);
+            border: 5px double blue;
+            color: red;
+            
+        }
+
+        .slideshow-item {
+            display: none; /* Hide all items by default */
+            padding: 20px; /* Add padding for text */
+            font-weight: 100;
+            font-size: .9em;
+        }
+
+        .slideshow-title {
+            padding-left: 20px;
+            padding-top: 20px;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+
+        .slideshow-item.active {
+            display: block; /* Show the active item */
         }
 
         #smokeCanvas {
@@ -219,21 +249,30 @@
         <br><br><br><br><br><br><br><br><br>
         <div class="subtitle">
             What has been described by local residents as a "slurry of cigarettes, poppers, weed, beer breath, raw sewage, piss, and even cum," has rapidly consumed the city of Richmond, VA. We've all experienced this odd "smell" looming over the city. Why has there been inconsistent coverage of it? <br><br>This site is a live archive documenting and providing the latest coverage this unknown phenomenon. 
-        <br><br><i>Submit any odor reports <b><a href="https://forms.gle/WrCh2S8Wks8voDnr9">here.</a></b></i>
+        <br><br><i>Submit any odor reports <b><a href="Localreports.html">here.</a></b></i>
         </div>
-        <br><br><br><br>
+        <br>
         <div class="mobileview hidden">
             <div class="flexbox-container-column">
-                <div class="flex-item"><a href="LocalReports.html">&rarr; Local Reports</a></div>
+                <div class="flex-item"><a href="Localreports.html">&rarr; Local Reports</a></div>
             <div class="flex-item"><a href="pressreleasepg.html">&rarr; Press Release 09/05/24</a></div>
             <div class="flex-item"><a href="instagrampost1.html">&rarr; Instagram Post 09/7/24</a></div>
             <div class="flex-item"><a href="redditpost1.html">&rarr; Reddit Post 09/03/24</a></div>
             <div class="flex-item"><a href="NBC13article.html">&rarr; NBC13 Odor Article 09/03/24</a></div>
             </div>
+            <br><br><br><br><br>
+            <div class="slideshow-container">
+                <div class="slideshow-title">Featured Odor Reports</div>
+                <div class="slideshow-item active"></div>
+                <div class="slideshow-item"></div>
+                <div class="slideshow-item"></div>
+            </div>
         </div>
+
+        
     
         <div class="tinytext">
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             Last Updated <span id="lastUpdated"></span>.
             <br>Please note that this is a continuous archive of growing sources.
             <br>©RichmondSmell2024 Alrights reserved.
@@ -251,6 +290,7 @@
 
 
     <div class="draggable-container">
+        <br>
         <div class="drag" id="drag1" style="top: 1000px; left: 10%;" title="Press Release">
             <div class="dragtext"><a href="pressreleasepg.html">Press Release 09/05/24</a></div>
             <img src="pressrelease.jpg" alt="Press Release">
@@ -268,9 +308,10 @@
             <!-- You can add content or images here -->
         </div>
         <div class="drag" id="drag5" style="top: 1000px; left: 74%;">
-            <div class="dragtext"><a href="LocalReports.html">LocalReports</a></div><img src="odor_smell.png" alt = "Local Reports">
+            <div class="dragtext"><a href="Localreports.html">Local Reports</a></div><img src="odor_smell.png" alt = "Local Reports">
             <!-- You can add content or images here -->
         </div>
+        <br><br>
         
     </div>
     
@@ -463,6 +504,49 @@
         };
         move();
     }
+
+async function fetchTextItems() {
+    const response = await fetch('localreports.html');
+    const text = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+
+    // Select flex items from localreports.html (adjust selector as needed)
+    const flexItems = doc.querySelectorAll('.flex-item'); // Change this selector to match your flex items
+    const slideshowItems = document.querySelectorAll('.slideshow-item');
+
+    flexItems.forEach((item, index) => {
+        if (slideshowItems[index]) {
+            slideshowItems[index].innerHTML = item.innerHTML; // Set innerHTML to keep <br> tags
+        }
+    });
+}
+
+
+// Slideshow logic
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slideshow-item');
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            if (i === index) {
+                slide.classList.add('active');
+            }
+        });
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    // Fetch items and start slideshow
+    fetchTextItems().then(() => {
+        showSlide(currentSlide);
+        setInterval(nextSlide, 6000); // Change slide every 3 seconds
+    });
+
 
     function changeBackgroundColor() {
         const scrollY = window.scrollY;
