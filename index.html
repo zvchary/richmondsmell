@@ -249,12 +249,12 @@
         <br><br><br><br><br><br><br><br><br>
         <div class="subtitle">
             What has been described by local residents as a "slurry of cigarettes, poppers, weed, beer breath, raw sewage, piss, and even cum," has rapidly consumed the city of Richmond, VA. We've all experienced this odd "smell" looming over the city. Why has there been inconsistent coverage of it? <br><br>This site is a live archive documenting and providing the latest coverage this unknown phenomenon. 
-        <br><br><i>Submit any odor reports <b><a href="Localreports.html">here.</a></b></i>
+        <br><br><i>Submit any odor reports <b><a href="LocalReports.html">here.</a></b></i>
         </div>
         <br>
         <div class="mobileview hidden">
             <div class="flexbox-container-column">
-                <div class="flex-item"><a href="Localreports.html">&rarr; Local Reports</a></div>
+                <div class="flex-item"><a href="LocalReports.html">&rarr; Local Reports</a></div>
             <div class="flex-item"><a href="pressreleasepg.html">&rarr; Press Release 09/05/24</a></div>
             <div class="flex-item"><a href="instagrampost1.html">&rarr; Instagram Post 09/7/24</a></div>
             <div class="flex-item"><a href="redditpost1.html">&rarr; Reddit Post 09/03/24</a></div>
@@ -308,7 +308,7 @@
             <!-- You can add content or images here -->
         </div>
         <div class="drag" id="drag5" style="top: 1000px; left: 74%;">
-            <div class="dragtext"><a href="Localreports.html">Local Reports</a></div><img src="odor_smell.png" alt = "Local Reports">
+            <div class="dragtext"><a href="LocalReports.html">Local Reports</a></div><img src="odor_smell.png" alt = "Local Reports">
             <!-- You can add content or images here -->
         </div>
         <br><br>
@@ -506,7 +506,7 @@
     }
 
 async function fetchTextItems() {
-    const response = await fetch('localreports.html');
+    const response = await fetch('LocalReports.html');
     const text = await response.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, 'text/html');
